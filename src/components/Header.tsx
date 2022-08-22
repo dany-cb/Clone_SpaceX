@@ -1,7 +1,18 @@
+/**
+ * TODO:
+ * - [] Add responsiveness
+ * - [] Use map to render elements
+ */
+
 import { BiMenu, BiX } from 'react-icons/bi'
 import { css } from '@emotion/react'
+import { motion, useCycle, Variant } from 'framer-motion'
 
 import Logo from './Logo'
+
+type custVariants = {
+  [key in 'overlay' | 'items' | 'menu']: { [key in 'open' | 'closed']: Variant }
+}
 
 const testBGBlack = css`
   background-color: #000;
@@ -39,8 +50,66 @@ const hiddenMenu = css`
   background-color: #000;
   margin-left: auto;
 `
-
+/* Main Component */
 function Header() {
+  const [isOpen, toggleOpen] = useCycle(false, true)
+
+  const variants: custVariants = {
+    overlay: {
+      open: {
+        display: 'block',
+        visibility: 'visible',
+        transition: {
+          delayChildren: 0.2,
+        },
+      },
+      closed: {
+        display: 'none',
+        visibility: 'hidden',
+        transition: {
+          when: 'afterChildren',
+        },
+      },
+    },
+    menu: {
+      open: {
+        x: 0,
+        transition: {
+          staggerChildren: 0.03,
+          when: 'beforeChildren',
+          x: {
+            type: 'tween',
+            duration: 0.2,
+            ease: 'easeInOut',
+          },
+        },
+      },
+      closed: {
+        x: 290,
+        transition: {
+          staggerChildren: 0.03,
+          staggerDirection: -1,
+          when: 'afterChildren',
+          x: {
+            type: 'tween',
+            duration: 0.2,
+            ease: 'easeInOut',
+          },
+        },
+      },
+    },
+    items: {
+      open: {
+        y: 0,
+        opacity: 1,
+      },
+      closed: {
+        y: 20,
+        opacity: 0,
+      },
+    },
+  }
+
   return (
     <header css={header}>
       <Logo />
@@ -76,10 +145,14 @@ function Header() {
           </li>
         </ul>
       </nav>
-      <button css={btn}>
+      <button css={btn} onClick={() => toggleOpen()}>
         <BiMenu color="#fff" />
       </button>
-      <div
+
+      <motion.div
+        onClick={() => toggleOpen()}
+        variants={variants.overlay}
+        animate={isOpen ? 'open' : 'closed'}
         css={css`
           display: none;
           position: absolute;
@@ -89,10 +162,20 @@ function Header() {
           background-color: rgba(0, 0, 0, 0.5);
         `}
       >
-        <nav css={hiddenMenu}>
-          <button css={btn}>
+        <motion.nav
+          variants={variants.menu}
+          css={hiddenMenu}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <motion.button
+            css={btn}
+            onClick={(e) => {
+              toggleOpen()
+              e.stopPropagation()
+            }}
+          >
             <BiX color="#fff" />
-          </button>
+          </motion.button>
           <ul
             css={css`
               padding-top: 60px;
@@ -120,45 +203,45 @@ function Header() {
               }
             `}
           >
-            <li>
+            <motion.li variants={variants.items}>
               <a href="#">Falcon 9</a>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li variants={variants.items}>
               <a href="#">Falcon Heavy</a>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li variants={variants.items}>
               <a href="#">Dragon</a>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li variants={variants.items}>
               <a href="#">Starship</a>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li variants={variants.items}>
               <a href="#">Human Spaceflight</a>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li variants={variants.items}>
               <a href="#">Rideshare</a>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li variants={variants.items}>
               <a href="#">Starlink</a>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li variants={variants.items}>
               <a href="#">Mission</a>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li variants={variants.items}>
               <a href="#">Launches</a>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li variants={variants.items}>
               <a href="#">Careers</a>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li variants={variants.items}>
               <a href="#">Updates</a>
-            </li>
-            <li>
+            </motion.li>
+            <motion.li variants={variants.items}>
               <a href="#">Shop</a>
-            </li>
+            </motion.li>
           </ul>
-        </nav>
-      </div>
+        </motion.nav>
+      </motion.div>
     </header>
   )
 }
