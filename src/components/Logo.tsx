@@ -1,5 +1,5 @@
 import React from 'react'
-import { css } from '@emotion/react'
+import { css, SerializedStyles } from '@emotion/react'
 
 const logoSVG = css`
   path,
@@ -11,9 +11,13 @@ const logoSVG = css`
   z-index: 50;
 `
 
-const Logo = () => {
+type Props = {
+  addCss?: SerializedStyles
+}
+
+const Logo = ({ addCss }: Props) => {
   return (
-    <a css={logoSVG} href="/">
+    <a css={[logoSVG, addCss]} href="/">
       <svg version="1.1" x="0px" y="0px" viewBox="0 0 400 50">
         <title>SpaceX Logo</title>
         <g className="letter_s">

@@ -16,6 +16,10 @@ const global = css`
     height: 100%;
   }
 
+  #___gatsby {
+    position: relative;
+  }
+
   * {
     margin: 0;
     padding: 0;
