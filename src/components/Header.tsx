@@ -34,16 +34,18 @@ const testBGBlack = css`
 `
 
 const header = css`
-  ${testBGBlack};
+  /* ${testBGBlack}; */
 
   ${mq[1]} {
     height: 100px;
     padding: 32px 50px;
   }
-  position: absolute;
-  max-width: 1400px;
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  /* max-width: 1400px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%); */
   width: 100%;
   height: 60px;
   display: flex;
@@ -314,4 +316,4 @@ function Header() {
   )
 }
 
-export default Header
+export { Header as default, mq }
