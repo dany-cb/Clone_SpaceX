@@ -11,7 +11,6 @@ const config: GatsbyConfig = {
   graphqlTypegen: true,
   plugins: ['gatsby-plugin-emotion'],
   pathPrefix: '/Clone_SpaceX',
-  assetPrefix: '/Clone_SpaceX',
 }
 
 export default config
