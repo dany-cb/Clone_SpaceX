@@ -14,24 +14,24 @@ type Content = {
 }
 const content: Content[] = [
   {
-    img: '/images/CRS-25.webp',
+    img: './images/CRS-25.webp',
     caption: 'Recent Launch',
     title: 'CRS-25 Mission',
     button: { title: 'Rewatch', link: '#' },
   },
   {
-    img: '/images/Starlink.webp',
+    img: './images/Starlink.webp',
     caption: 'Recent Launch',
     title: 'Starlink Mission',
     button: { title: 'Rewatch', link: '#' },
   },
   {
-    img: '/images/Starship.webp',
+    img: './images/Starship.webp',
     title: 'Starship Update',
     button: { title: 'Learn More', link: '#' },
   },
   {
-    img: '/images/StarshipLand.webp',
+    img: './images/StarshipLand.webp',
     title: 'Starship to Land NASA Astronauts on the Moon',
     button: { title: 'Learn More', link: '#' },
   },
