@@ -39,13 +39,17 @@ const header = css`
   ${mq[1]} {
     height: 100px;
     padding: 32px 50px;
+    align-items: baseline;
   }
   position: fixed;
   z-index: 20;
   top: 0;
-  /* max-width: 1400px;
-  left: 50%;
-  transform: translateX(-50%); */
+
+  @media (min-width: 1400px) {
+    right: 0;
+    width: calc(50vw + 700px);
+  }
+
   width: 100%;
   height: 60px;
   display: flex;
@@ -124,12 +128,9 @@ const variants: CustVariants = {
     closed: {
       x: 290,
       transition: {
-        staggerChildren: 0.03,
-        staggerDirection: -1,
-        when: 'afterChildren',
         x: {
           type: 'tween',
-          duration: 0.2,
+          duration: 0.3,
           ease: 'easeIn',
         },
       },
@@ -141,7 +142,7 @@ const variants: CustVariants = {
       opacity: 1,
     },
     closed: {
-      y: 20,
+      y: 0,
       opacity: 0,
     },
   },
@@ -156,6 +157,7 @@ function Header() {
         addCss={css`
           ${mq[1]} {
             width: 210px;
+            margin-right: 24px;
           }
         `}
       />
@@ -165,7 +167,7 @@ function Header() {
             display: flex;
             li {
               list-style: none;
-              margin: 0 12px;
+              margin: 0 14px;
             }
             li:last-of-type {
               margin-left: auto;
@@ -182,6 +184,7 @@ function Header() {
                     text-transform: uppercase;
                     text-decoration: none;
                     color: #fff;
+                    font-weight: bold;
                     font-size: 14px;
                     position: relative;
                     white-space: nowrap;
@@ -192,17 +195,14 @@ function Header() {
                       width: 100%;
                       border-bottom: 1px solid #fff;
                       bottom: -4px;
-                      visibility: hidden;
                       transform: scaleX(0);
-                      transform-origin: left center;
-                      transition: transform ease-in-out 0.2s,
-                        transform-origin step-end 0.2s, visibility 0.2s;
+                      transform-origin: right center;
+                      transition: transform cubic-bezier(0.19, 1, 0.22, 1) 0.6s;
                     }
 
                     &:hover::before {
-                      visibility: visible;
                       transform: scaleX(1);
-                      transform-origin: right center;
+                      transform-origin: left center;
                     }
                   `}
                 >
@@ -218,6 +218,8 @@ function Header() {
 
           ${mq[1]} {
             position: static;
+            align-self: center;
+            margin-top: 8px;
           }
         `}
         onClick={() => toggleOpen()}
@@ -277,6 +279,10 @@ function Header() {
             {menuItems.map((item) => (
               <motion.li
                 variants={variants.items}
+                initial={{
+                  y: 20,
+                  opacity: 0,
+                }}
                 key={item}
                 css={
                   ![...burgerMenuItems, 'Shop'].includes(item)

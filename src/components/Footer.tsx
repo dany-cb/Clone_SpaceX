@@ -46,6 +46,10 @@ const Footer = () => {
             font-weight: bold;
 
             width: 100%;
+            transition: color cubic-bezier(0.25, 1, 0.25, 1) 1s;
+            &:hover {
+              color: #8b939b;
+            }
           }
           li {
             margin: 5px 5px;
