@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 import { motion, useCycle, Variant } from 'framer-motion'
 
 import Logo from './Logo'
+import { useEffect, useState } from 'react'
 
 type CustVariants = {
   [key in 'overlay' | 'items' | 'menu']: { [key in 'open' | 'closed']: Variant }
@@ -56,7 +57,14 @@ const header = css`
   align-items: center;
   justify-content: center;
 `
-
+const blackOverlay = css`
+  width: 100vw;
+  height: 100%;
+  top: 0;
+  right: 0;
+  position: absolute;
+  background-color: #000;
+`
 const btn = css`
   cursor: pointer;
   background: none;
@@ -147,12 +155,44 @@ const variants: CustVariants = {
     },
   },
 }
+
+let prevScrollTop = 0
+
 /* Main Component */
 function Header() {
-  const [isOpen, toggleOpen] = useCycle(false, true)
+  const [isOpen, toggleOpen] = useCycle(false, true) //State of hamburger menu
+
+  const [showOverlay, setOverlay] = useState(false)
+  console.log('overlay', showOverlay)
+  const [isVisible, setVisible] = useState(true)
+  const checkScroll = () => {
+    window.scrollY > prevScrollTop && setVisible(false)
+
+    window.scrollY < prevScrollTop && setVisible(true)
+    if (window.scrollY != prevScrollTop) {
+      toggleOpen(0)
+      window.scrollY > window.innerHeight ? setOverlay(true) : setOverlay(false)
+    }
+    prevScrollTop = window.scrollY
+    window.requestAnimationFrame(checkScroll)
+  }
+  useEffect(() => {
+    checkScroll()
+  }, [])
 
   return (
-    <header css={header}>
+    <motion.header
+      css={header}
+      animate={
+        isVisible ? { opacity: 1 } : { opacity: 0, pointerEvents: 'none' }
+      }
+    >
+      <motion.div
+        css={blackOverlay}
+        initial={{ y: -100 }}
+        animate={isVisible && showOverlay ? { y: 0 } : { y: -100 }}
+        transition={{ ease: 'easeInOut' }}
+      ></motion.div>
       <Logo
         addCss={css`
           ${mq[1]} {
@@ -235,8 +275,9 @@ function Header() {
           display: none;
           position: absolute;
           top: 0;
+          right: 0;
           height: 100vh;
-          width: 100%;
+          width: 100vw;
           z-index: 10;
           background-color: rgba(0, 0, 0, 0.5);
         `}
@@ -318,7 +359,7 @@ function Header() {
           </ul>
         </motion.nav>
       </motion.div>
-    </header>
+    </motion.header>
   )
 }
 

@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 
 import { css } from '@emotion/react'
 import { mq } from './Header'
-import { motion, useCycle, Variants } from 'framer-motion'
+import { motion, Variants } from 'framer-motion'
+import DownArrow from './DownArrow'
 
 const txtVariants: Variants = {
   hidden: {
@@ -182,6 +183,7 @@ const Section = (props: Content) => {
           ></div>
         </motion.button>
       </motion.div>
+      <DownArrow />
     </section>
   )
 }
